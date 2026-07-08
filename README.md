@@ -7,5 +7,5 @@
 - **[Docs]((https://avanteontech.net/index.php))**
 
 ### Links
-**[www.panacea-soft.com](https://avanteontech.net/index.php)**
+**[](https://avanteontech.net/index.php)**
 "# HirePower-hub-Website" 
