@@ -1,11 +1,11 @@
-<p align="center"><a href="https://www.panacea-soft.com" target="_blank"> <img src="https://www.panacea-soft.com/wp-content/uploads/2020/07/ps_logo_2020_2x.png" ></a></p>
+<p align="center"><a href="https://avanteontech.net" target="_blank"> <img src="https://avanteontech.net/img/uploads/06ed6d537e9b1fa0.png" ></a></p>
 
-## About PSX Multi-Purpose Classified Application
+## About Hire power Hub
 ### Version 1.5.6
 
 ## Documentation
-- **[Docs](https://www.docs.panacea-soft.com/psx-mpc/)**
+- **[Docs]((https://avanteontech.net/index.php))**
 
 ### Links
-**[www.panacea-soft.com](http://www.panacea-soft.com)**
+**[www.panacea-soft.com](https://avanteontech.net/index.php)**
 "# HirePower-hub-Website" 
