@@ -31,7 +31,7 @@
 
                     <!-- business document -->
                     <div class="mt-4">
-                        <ps-label class="text-base font-medium mb-2">{{ $t('core__be_business_document') }}</ps-label>
+                        <ps-label class="text-base font-medium mb-2">{{ $t('core__be_business_document').replace(/\s*\*$/, '') }}</ps-label>
                         <ps-input-with-right-icon rounded="rounded" :disabled="true" v-model:value="application.document"  :placeholder="$t('')" >
                             <template #icon >
                                 <a :href="route('reject_vendor.download_document', application.vendor_id)" class="font-medium transition duration-150 ease-in-out py-2 px-4 text-dark dark:text-white text-sm cursor-pointer opacity-100">
@@ -39,12 +39,11 @@
                                 </a>
                             </template>
                         </ps-input-with-right-icon>
-                        <!-- <ps-input  :disabled="true" type="email" ref="symbol" v-model:value="application.document" :placeholder="$t('')" /> -->
                     </div>
 
                     <!-- store description -->
                     <div class="mt-4">
-                        <ps-label class="text-base font-medium mb-2">{{ $t('core__be_cover_letter') }}</ps-label>
+                        <ps-label class="text-base font-medium mb-2">{{ $t('core__be_cover_letter').replace(/\s*\*$/, '') }}</ps-label>
                         <ps-textarea :disabled="true" rows="4" v-model:value="application.cover_letter" :placeholder="$t('')" />
                     </div>
 

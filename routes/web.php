@@ -97,6 +97,11 @@ use Modules\Payment\Http\Controllers\Backend\Controllers\Payment\PaymentControll
 use Modules\Payment\Http\Controllers\Backend\Controllers\Payment\PaymentCoreKeyController;
 use Modules\Payment\Http\Controllers\Backend\Controllers\PaymentSetting\PaymentSettingController;
 
+// Root route - show welcome page
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
+
 Route::get('sitemap', [SitemapController::class, 'redirectToView']);
 Route::get('allsitemap', [SitemapController::class, 'generateSitemap']);
 Route::get('blogSitemap', [SitemapController::class, 'blogMap'])->name('blogSitemap');
@@ -112,180 +117,20 @@ Route::get('/optimize-clear', function () {
     echo 'Cache cleared successfully!';
 })->middleware(['auth', 'isAdmin']);
 
-Route::group(['prefix' => 'install', 'as' => 'LaravelInstaller::', 'namespace' => 'Modules\Installer\Controllers', 'middleware' => ['web', 'install']], function () {
-    Route::get('/', [
-        'as' => 'welcome',
-        'uses' => 'WelcomeController@welcome',
-    ]);
+// Installer routes disabled for local development
+// Route::group(['prefix' => 'install', 'as' => 'LaravelInstaller::', 'namespace' => 'Modules\Installer\Controllers', 'middleware' => ['web', 'install']], function () {
+//     // Routes disabled
+// });
 
-    Route::get('purchasedCode', [
-        'as' => 'purchasedCode',
-        'uses' => 'PurchasedCodeController@purchasedCode',
-    ]);
+// Update wizard routes disabled for local development
+// Route::group(['prefix' => 'nextUpdate', 'as' => 'NextLaravelUpdater::', 'namespace' => 'Modules\Installer\Controllers', 'middleware' => ['web', 'auth']], function () {
+//     // Routes disabled
+// });
 
-    Route::post('purchasedCodeStore', [
-        'as' => 'purchasedCodeStore',
-        'uses' => 'PurchasedCodeController@purchasedCodeStore',
-    ]);
-
-    Route::get('userConfiguration', [
-        'as' => 'userConfiguration',
-        'uses' => 'UserConfigurationController@userConfiguration',
-    ]);
-
-    Route::post('userConfigurationUpdate', [
-        'as' => 'userConfigurationUpdate',
-        'uses' => 'UserConfigurationController@userConfigurationUpdate',
-    ]);
-
-    Route::get('environment', [
-        'as' => 'environment',
-        'uses' => 'EnvironmentController@environmentMenu',
-    ]);
-
-    Route::get('environment/wizard', [
-        'as' => 'environmentWizard',
-        'uses' => 'EnvironmentController@environmentWizard',
-    ]);
-
-    Route::post('environment/saveWizard', [
-        'as' => 'environmentSaveWizard',
-        'uses' => 'EnvironmentController@saveWizard',
-    ]);
-
-    Route::get('environment/classic', [
-        'as' => 'environmentClassic',
-        'uses' => 'EnvironmentController@environmentClassic',
-    ]);
-
-    Route::post('environment/saveClassic', [
-        'as' => 'environmentSaveClassic',
-        'uses' => 'EnvironmentController@saveClassic',
-    ]);
-
-    Route::get('requirements', [
-        'as' => 'requirements',
-        'uses' => 'RequirementsController@requirements',
-    ]);
-
-    Route::get('permissions', [
-        'as' => 'permissions',
-        'uses' => 'PermissionsController@permissions',
-    ]);
-
-    Route::get('database', [
-        'as' => 'database',
-        'uses' => 'DatabaseController@database',
-    ]);
-
-    Route::get('final', [
-        'as' => 'final',
-        'uses' => 'FinalController@finish',
-    ]);
-});
-
-// updater wizard with vue start
-Route::group(['prefix' => 'nextUpdate', 'as' => 'NextLaravelUpdater::', 'namespace' => 'Modules\Installer\Controllers', 'middleware' => ['web', 'auth']], function () {
-    Route::group(['middleware' => ['update']], function () {
-        Route::get('/', [
-            'as' => 'welcome',
-            'uses' => 'NextUpdateController@welcome',
-        ]);
-
-        Route::get('sourceCode', [
-            'as' => 'sourceCode',
-            'uses' => 'NextUpdateController@sourceCode',
-        ]);
-
-        Route::post('sourceCodeSync', [
-            'as' => 'sourceCodeSync',
-            'uses' => 'NextUpdateController@sourceCodeSync',
-        ]);
-
-        // backend language start
-        Route::get('/addNewLangString', [
-            'as' => 'addNewLangString',
-            'uses' => 'NextUpdateController@addNewLangString',
-        ]);
-
-        Route::post('/addNewLangStringStore', [
-            'as' => 'addNewLangStringStore',
-            'uses' => 'NextUpdateController@addNewLangStringStore',
-        ]);
-        // backend language end
-
-        // Frontend language start
-        Route::get('/addNewFeLangString', [
-            'as' => 'addNewFeLangString',
-            'uses' => 'NextUpdateController@addNewFeLangString',
-        ]);
-
-        Route::post('/addNewFeLangStringStore', [
-            'as' => 'addNewFeLangStringStore',
-            'uses' => 'NextUpdateController@addNewFeLangStringStore',
-        ]);
-        // Frontend language end
-
-        // mobile language start
-        Route::get('/addNewMobileLangString', [
-            'as' => 'addNewMobileLangString',
-            'uses' => 'NextUpdateController@addNewMobileLangString',
-        ]);
-
-        Route::post('/addNewMobileLangStringStore', [
-            'as' => 'addNewMobileLangStringStore',
-            'uses' => 'NextUpdateController@addNewMobileLangStringStore',
-        ]);
-        // mobile language end
-
-        // vendor language start
-        Route::get('/addNewVendorLangString', [
-            'as' => 'addNewVendorLangString',
-            'uses' => 'NextUpdateController@addNewVendorLangString',
-        ]);
-
-        Route::post('/addNewVendorLangStringStore', [
-            'as' => 'addNewVendorLangStringStore',
-            'uses' => 'NextUpdateController@addNewVendorLangStringStore',
-        ]);
-        // vendor language end
-
-        Route::get('/builderTableField', [
-            'as' => 'builderTableField',
-            'uses' => 'NextUpdateController@builderTableField',
-        ]);
-
-        Route::post('/builderTableFieldSync', [
-            'as' => 'builderTableFieldSync',
-            'uses' => 'NextUpdateController@builderTableFieldSync',
-        ]);
-    });
-
-    // This needs to be out of the middleware because right after the migration has been
-    // run, the middleware sends a 404.
-    Route::get('final', [
-        'as' => 'final',
-        'uses' => 'NextUpdateController@finish',
-    ]);
-});
-// updater wizard with vue end
-
-Route::group(['prefix' => 'nextUpdateV3', 'as' => 'NextLaravelUpdater::', 'namespace' => 'Modules\Installer\Controllers', 'middleware' => ['web', 'auth']], function () {
-    Route::get('/', [
-        'as' => 'updateV3',
-        'uses' => 'NextUpdateV3Controller@updateV3View',
-    ]);
-
-    Route::post('/uploadZip', [
-        'as' => 'updateV3.uploadZip',
-        'uses' => 'NextUpdateV3Controller@uploadZip',
-    ]);
-
-    Route::post('/installUpdate', [
-        'as' => 'updateV3.installUpdate',
-        'uses' => 'NextUpdateV3Controller@installUpdate',
-    ]);
-});
+// UpdateV3 routes disabled for local development
+// Route::group(['prefix' => 'nextUpdateV3', 'as' => 'NextLaravelUpdater::', 'namespace' => 'Modules\Installer\Controllers', 'middleware' => ['web', 'auth']], function () {
+//     // Routes disabled
+// });
 
 Route::middleware(['auth:sanctum'])->get('/admin', function () {
     if (Auth::check()) {
@@ -310,7 +155,7 @@ Route::post('/update-verify', [PhoneVerifyController::class, 'updateVerify'])->n
 Route::middleware(['isInstall'])->group(function () {
     require_once __DIR__.'/fortify.php';
 
-    require base_path('Modules/Template/PSXFETemplate/Resources/Pages/vendor/routes/web.php');
+    // require base_path('Modules/Template/PSXFETemplate/Resources/Pages/vendor/routes/web.php');
     require base_path('Modules/StoreFront/VendorPanel/Resources/Pages/vendor/routes/web.php');
 
     Route::middleware(['isVendorSettingOn'])->group(function () {
@@ -1115,5 +960,17 @@ Route::get('/run-migration', function () {
 
     return redirect()->route('dashboard');
 })->middleware(['auth', 'isAdmin']);
+
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'success',
+        'message' => 'HirePower Hub - Laravel API Server Running',
+        'version' => '1.5.6',
+        'framework' => 'Laravel 9.52.0',
+        'environment' => config('app.env'),
+        'debug' => config('app.debug'),
+        'url' => url('/'),
+    ]);
+})->name('health');
 
 Route::get('/{shortCode}', [DynamicLinkController::class, 'redirect'])->name('shortcode');

@@ -38,7 +38,7 @@ use Modules\Core\Http\Facades\PSXBuilderServiceFacade;
 use Modules\Core\Http\Services\ApiTokenService;
 use Modules\Core\Http\Services\ProjectService;
 use Modules\Installer\Helpers\InstalledFileManager;
-use Modules\Template\PSXFETemplate\Http\Controllers\FeDashboardController;
+// use Modules\Template\PSXFETemplate\Http\Controllers\FeDashboardController; // Template module not installed
 
 class HandleInertiaRequests extends Middleware
 {
@@ -66,7 +66,7 @@ class HandleInertiaRequests extends Middleware
         protected VendorModuleServiceInterface $vendorModuleService,
         protected VendorMenuServiceInterface $vendorMenuService,
         protected VendorMenuGroupServiceInterface $vendorMenuGroupService,
-        protected FeDashboardController $feDashboardController,
+        // protected FeDashboardController $feDashboardController, // Template module not installed
         protected LanguageServiceInterface $languageService
     ) {}
 
@@ -77,8 +77,19 @@ class HandleInertiaRequests extends Middleware
         $psService = new PsService;
 
         $backendSetting = BackendSettingFacade::get();
+        if (!$backendSetting) {
+            $backendSetting = (object)['vendor_setting' => 0, 'date_format' => 'Y-m-d', 'upload_setting' => '', 'map_key' => ''];
+        }
+        
         $mobileSetting = MobileSettingFacade::get();
+        if (!$mobileSetting) {
+            $mobileSetting = (object)['is_show_subcategory' => 0, 'video_duration' => 0];
+        }
+        
         $frontendSetting = FrontendSettingFacade::get();
+        if (!$frontendSetting) {
+            $frontendSetting = (object)['firebase_web_push_key_pair' => '', 'firebase_config' => ''];
+        }
 
         [$forBE, $forFE, $forVendor] = $this->getBEAndFEAndVendorData($mobileSetting, $psService, $vendorIds, $request);
         $forAll = $this->forAll($frontendSetting, $backendSetting, $mobileSetting, $vendorIds);
@@ -495,8 +506,8 @@ class HandleInertiaRequests extends Middleware
             'adsClient' => ! empty($selcted_array['ads_client']) ? $selcted_array['ads_client'] : '',
             'isDisplayGoogleAdsense' => ! empty($selcted_array['is_display_google_adsense']) ? (int) $selcted_array['is_display_google_adsense'] : '',
             'canAccessVendor' => $canAccessVendor,
-            'firebaseConfig' => $this->firbaseConfig($frontendSetting),
-            'webPushKey' => $frontendSetting->firebase_web_push_key_pair,
+            'firebaseConfig' => $frontendSetting ? $this->firbaseConfig($frontendSetting) : '',
+            'webPushKey' => $frontendSetting?->firebase_web_push_key_pair ?? '',
             'dateFormat' => $backendSetting->date_format,
             'uploadSetting' => $backendSetting->upload_setting,
             'mapKey' => $backendSetting->map_key,
@@ -572,7 +583,7 @@ class HandleInertiaRequests extends Middleware
         $firstLoadOnlyProps = $request->hasHeader('X-Inertia') ? [] : [
             'langStrings' => $this->getAllLangString(),
             'langSymbol' => $this->getLangSymbol(),
-            'getAppInfo' => $this->feDashboardController->getAppInfo(),
+            // 'getAppInfo' => $this->feDashboardController->getAppInfo(), // Template module not installed
             'api_token' => (string) config('app.api_token'),
         ];
 
